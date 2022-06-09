@@ -1,20 +1,108 @@
-// Meyers_Modern.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
 
 #include <iostream>
 
-int main()
-{
-    std::cout << "Hello World!\n";
+#include <list>
+
+namespace item_1 {
+
+    namespace case_1{
+
+        template<typename T>
+        void f(const T& param) 
+        {
+            std::cout << param << '\n';
+        }
+
+        template<typename T>
+        void f(T* param)
+        {
+            std::cout << param << '\n';
+        }
+    }
+
+    namespace case_2 {
+        template<typename T>
+        void f(T&& param)
+        {
+            std::cout << param << '\n';
+        }
+    }
+    
+    namespace case_3 {
+        template<typename T>
+        void f(T param)
+        {
+            std::cout << param << '\n';
+        }
+
+        template <typename T, std::size_t N>
+        constexpr std::size_t arraySize(T(&)[N])
+        {
+            return N;
+        }
+    }
+
+    int main() {
+
+        int x = 27;
+        const int cx = x;
+        const int& rx = x;
+        const int* px = &x;
+        int& pn = x;
+
+        //case_2::f(rx);
+        //case_2::f(&rx);
+        //case_2::f(px);
+        //case_2::f(27);
+        
+        
+        //case_3::f(pn);
+        const char* const ptr = "Fun with pointers";
+        //case_3::f(ptr);
+
+        const char name[] = "J. P. Briggs";
+
+        const char* ptrToName = name;
+
+        std::cout << name << "  | siz: " << sizeof(name) << '\n';
+        std::cout << ptrToName << "  | siz: " << sizeof(ptrToName) << '\n';
+
+
+        std::cout << case_3::arraySize(name) << '\n';
+        int mappedVals[case_3::arraySize(name)];
+        std::array<char, case_3::arraySize(name)> *mappedValsBetter;
+
+        return 0;
+    }
+
 }
 
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
+namespace slef_test_1 {
 
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
+    union unia //tak definiujemy uniê
+    {
+        float u_zm1;
+        short int u_zm2;
+    };
+
+    int main() {
+        union unia* k = nullptr;
+
+        k = (unia*)malloc(sizeof(union unia));
+
+        k->u_zm2 = 2;
+
+        std::cout << k->u_zm2;
+
+        return 0;
+    }
+}
+
+
+int main()
+{
+
+    item_1::main();
+
+    return 0;
+}
